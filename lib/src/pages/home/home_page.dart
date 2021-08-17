@@ -16,11 +16,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('appbarTitle'),
       ),
-      body: Center(
-        child: Container(
-          child: Text('You tapped the FAB times'),
-        ),
-      ),
+      body: _buildProductGrid(),
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         tooltip: 'Increment Counter',
@@ -29,6 +25,17 @@ class HomePage extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
+
+  GridView _buildProductGrid() => GridView.builder(
+        itemBuilder: (context, index) => LayoutBuilder(
+          builder: (context, constraint) => Text(
+            constraint.maxHeight.toString(),
+          ),
+        ),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+      );
 }
 
 class CustomDrawer extends StatelessWidget {
@@ -109,15 +116,15 @@ class CustomDrawer extends StatelessWidget {
   List<ListTile> _buildMainMenu(BuildContext context) {
     final menuViewModel = MenuViewModel()..setInBox = '99';
     return menuViewModel.items
-      .map((item) => ListTile(
-            title: Text(item.title),
-            leading: _buildBadge(
-              item.notification ?? '',
-              icon: item.icon,
-              iconColor: item.iconColor,
-            ),
-          ))
-      .toList();
+        .map((item) => ListTile(
+              title: Text(item.title),
+              leading: _buildBadge(
+                item.notification ?? '',
+                icon: item.icon,
+                iconColor: item.iconColor,
+              ),
+            ))
+        .toList();
   }
 
   Badge _buildBadge(
