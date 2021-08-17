@@ -16,6 +16,7 @@ class SSOButton extends StatelessWidget {
   }
 
   FloatingActionButton _buildButton(SSO item) => FloatingActionButton(
+    heroTag: item.icon.toString(),
     onPressed: item.onPress,
     backgroundColor: item.backgroundColor,
     child: Icon(
