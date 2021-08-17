@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
+import 'package:hero_flutter/src/pages/home/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Form extends StatefulWidget {
@@ -72,6 +74,12 @@ class _FormState extends State<Form> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(AppSetting.token, 'TExkgk0494oksrkf');
       await prefs.setString(AppSetting.username, username);
+
+      // method 1
+      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePage(),),);
+
+      // method 2
+      Navigator.pushReplacementNamed(context, AppRoute.home);
     }
   }
 }
