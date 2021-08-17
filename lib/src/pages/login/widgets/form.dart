@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:hero_flutter/src/constants/app_setting.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Form extends StatelessWidget {
-  const Form({
-    Key? key,
-  }) : super(key: key);
+class Form extends StatefulWidget {
+  @override
+  _FormState createState() => _FormState();
+}
+
+class _FormState extends State<Form> {
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +35,7 @@ class Form extends StatelessWidget {
             child: Column(
               children: [
                 TextField(
+                  controller: _usernameController,
                   decoration: InputDecoration(
                     hintText: 'codemobiles@gmail.com',
                     labelText: 'email',
@@ -29,6 +43,7 @@ class Form extends StatelessWidget {
                   ),
                 ),
                 TextField(
+                  controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: 'password',
                     icon: Icon(Icons.lock),
@@ -42,12 +57,21 @@ class Form extends StatelessWidget {
         SizedBox(
           width: 220,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: _login,
             child: Text('LOGIN'),
           ),
         ),
       ],
     );
   }
-}
 
+  void _login() async {
+    final username = _usernameController.text;
+    final password = _passwordController.text;
+    if(username == 'admin' && password == 'password'){
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(AppSetting.token, 'TExkgk0494oksrkf');
+      await prefs.setString(AppSetting.username, username);
+    }
+  }
+}
