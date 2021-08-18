@@ -10,6 +10,7 @@ import 'package:hero_flutter/src/models/product.dart';
 import 'package:hero_flutter/src/pages/home/widgets/product_item.dart';
 import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -49,7 +50,10 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
+        onPressed: () async {
+          final ImagePicker _picker = ImagePicker();
+          final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+        },
         tooltip: 'Increment Counter',
         child: Icon(Icons.add),
       ),
