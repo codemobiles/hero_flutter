@@ -8,6 +8,7 @@ import 'package:hero_flutter/src/constants/app_setting.dart';
 import 'package:hero_flutter/src/constants/asset.dart';
 import 'package:hero_flutter/src/models/product.dart';
 import 'package:hero_flutter/src/pages/home/widgets/product_item.dart';
+import 'package:hero_flutter/src/pages/management/management_page.dart';
 import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,9 +51,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-            Navigator.pushNamed(context, AppRoute.management);
-        },
+        onPressed: () => _navigatorManagementPage(),
         tooltip: 'Increment Counter',
         child: Icon(Icons.add),
       ),
@@ -67,6 +66,7 @@ class _HomePageState extends State<HomePage> {
           itemCount: product.length,
           itemBuilder: (context, index) => ProductItem(
             product[index],
+            onTap: ()=> _navigatorManagementPage(product[index]),
           ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -76,6 +76,10 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
+
+  void _navigatorManagementPage([Product? product]){
+    Navigator.pushNamed(context, AppRoute.management, arguments: product);
+  }
 }
 
 class CustomDrawer extends StatelessWidget {
