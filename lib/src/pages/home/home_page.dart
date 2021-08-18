@@ -12,12 +12,18 @@ import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[400],
       drawer: CustomDrawer(),
       appBar: AppBar(
         title: Text('appbarTitle'),
@@ -51,13 +57,20 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  GridView _buildProductGrid(List<Product> product) => GridView.builder(
-        itemCount: product.length,
-        itemBuilder: (context, index) => ProductItem(
-          product[index],
-        ),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+  RefreshIndicator _buildProductGrid(List<Product> product) => RefreshIndicator(
+        onRefresh: () async => setState(() {}),
+        child: GridView.builder(
+          padding: EdgeInsets.all(2),
+          itemCount: product.length,
+          itemBuilder: (context, index) => ProductItem(
+            product[index],
+          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,
+            childAspectRatio: 0.8,
+          ),
         ),
       );
 }

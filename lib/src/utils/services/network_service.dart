@@ -20,7 +20,8 @@ class NetworkService {
           print(options.data);
           return handler.next(options);
         },
-        onResponse: (response, handler) {
+        onResponse: (response, handler) async {
+          await Future.delayed(Duration(seconds: 2));
           return handler.next(response);
         },
         onError: (DioError e, handler) {
