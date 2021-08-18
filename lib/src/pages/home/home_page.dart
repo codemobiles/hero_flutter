@@ -1,8 +1,10 @@
 import 'package:badges/badges.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
+import 'package:hero_flutter/src/constants/asset.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,8 +30,41 @@ class HomePage extends StatelessWidget {
 
   GridView _buildProductGrid() => GridView.builder(
         itemBuilder: (context, index) => LayoutBuilder(
-          builder: (context, constraint) => Text(
-            constraint.maxHeight.toString(),
+          builder: (context, constraint) => Column(
+            children: [
+              Stack(
+                children: [
+                  Image.asset(
+                    Asset.noPhotoImage,
+                    height: constraint.maxHeight * 0.65,
+                  ),
+                  Positioned(
+                    top: 62,
+                    right: 2,
+                    child: Text('555555'),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('1111'),
+                        Text('2222'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
