@@ -1,6 +1,12 @@
 import 'package:dio/dio.dart';
 
 class NetworkService {
+  NetworkService._internal();
+
+  static final NetworkService _instance =  NetworkService._internal();
+
+  factory NetworkService()=> _instance;
+
   static final Dio _dio = Dio()
     ..interceptors.add(
       InterceptorsWrapper(
