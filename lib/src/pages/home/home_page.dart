@@ -51,8 +51,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final ImagePicker _picker = ImagePicker();
-          final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+            Navigator.pushNamed(context, AppRoute.management);
         },
         tooltip: 'Increment Counter',
         child: Icon(Icons.add),
