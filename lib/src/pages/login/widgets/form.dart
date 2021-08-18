@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
 import 'package:hero_flutter/src/pages/home/home_page.dart';
+import 'package:hero_flutter/src/utils/services/local_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Form extends StatefulWidget {
@@ -15,8 +16,8 @@ class _FormState extends State<Form> {
 
   @override
   void initState() {
-    SharedPreferences.getInstance().then((value) {
-      _usernameController.text = value.getString(AppSetting.username) ?? "";
+    LocalStorageService().getUsername().then((value) {
+      _usernameController.text = value;
     });
     super.initState();
   }
@@ -78,11 +79,8 @@ class _FormState extends State<Form> {
   void _login() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
-    if(username == 'admin' && password == 'password'){
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(AppSetting.token, 'TExkgk0494oksrkf');
-      await prefs.setString(AppSetting.username, username);
-
+    if (username == 'admin' && password == 'password') {
+      await LocalStorageService().setUserInfo(username, 'TExkgk0494oksrkf');
       // method 1
       //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomePage(),),);
 

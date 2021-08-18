@@ -9,6 +9,7 @@ import 'package:hero_flutter/src/constants/asset.dart';
 import 'package:hero_flutter/src/models/product.dart';
 import 'package:hero_flutter/src/pages/home/widgets/product_item.dart';
 import 'package:hero_flutter/src/pages/management/management_page.dart';
+import 'package:hero_flutter/src/utils/services/local_storage_service.dart';
 import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
 import 'package:image_picker/image_picker.dart';
@@ -129,9 +130,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               onPressed: () async {
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
-                final pref = await SharedPreferences.getInstance();
-                pref.remove(AppSetting.token);
-                //pref.clear();
+                await LocalStorageService().removeToken();
                 Navigator.pushNamedAndRemoveUntil(
                     context, AppRoute.login, (route) => false);
               },

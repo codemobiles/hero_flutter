@@ -3,6 +3,7 @@ import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
 import 'package:hero_flutter/src/pages/home/home_page.dart';
 import 'package:hero_flutter/src/pages/login/login_page.dart';
+import 'package:hero_flutter/src/utils/services/local_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class App extends StatelessWidget {
@@ -16,8 +17,8 @@ class App extends StatelessWidget {
     );
   }
 
-   FutureBuilder<SharedPreferences> _buildHomePage() => FutureBuilder<SharedPreferences>(
-      future: SharedPreferences.getInstance(),
+   FutureBuilder<String> _buildHomePage() => FutureBuilder<String>(
+      future: LocalStorageService().getToken(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container(
@@ -25,8 +26,8 @@ class App extends StatelessWidget {
           );
         }
 
-        final token = snapshot.data?.getString(AppSetting.token) ?? "";
-        if (token.isEmpty) {
+        final token = snapshot.data;
+        if (token!.isEmpty) {
           return LoginPage();
         }
         return HomePage();
