@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
 import 'package:hero_flutter/src/constants/asset.dart';
+import 'package:hero_flutter/src/models/product.dart';
+import 'package:hero_flutter/src/pages/home/widgets/product_item.dart';
 import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,27 +15,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  Future<void> demoNetwork() async {
-    try {
-      var response = await NetworkService().getProduct();
-      response.forEach((element) {
-        print(element.name);
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    demoNetwork();
-
     return Scaffold(
       drawer: CustomDrawer(),
       appBar: AppBar(
         title: Text('appbarTitle'),
       ),
-      body: _buildProductGrid(),
+      body: FutureBuilder<List<Product>>(
+        future: NetworkService().getProduct(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          final product = snapshot.data;
+          if (product!.isEmpty) {
+            return Text('Empty');
+          }
+          return _buildProductGrid(product);
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         tooltip: 'Increment Counter',
@@ -43,44 +51,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  GridView _buildProductGrid() => GridView.builder(
-        itemBuilder: (context, index) => LayoutBuilder(
-          builder: (context, constraint) => Column(
-            children: [
-              Stack(
-                children: [
-                  Image.asset(
-                    Asset.noPhotoImage,
-                    height: constraint.maxHeight * 0.65,
-                  ),
-                  Positioned(
-                    top: 62,
-                    right: 2,
-                    child: Text('555555'),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('1111'),
-                        Text('2222'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+  GridView _buildProductGrid(List<Product> product) => GridView.builder(
+        itemCount: product.length,
+        itemBuilder: (context, index) => ProductItem(
+          product[index],
         ),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
