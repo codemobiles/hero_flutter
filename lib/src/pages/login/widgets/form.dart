@@ -14,6 +14,14 @@ class _FormState extends State<Form> {
   final _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    SharedPreferences.getInstance().then((value) {
+      _usernameController.text = value.getString(AppSetting.username) ?? "";
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
