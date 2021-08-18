@@ -1,18 +1,31 @@
 import 'package:badges/badges.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
 import 'package:hero_flutter/src/constants/asset.dart';
+import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  Future<void> demoNetwork() async {
+    try {
+      var response = await NetworkService().getProduct();
+      print(response);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    demoNetwork();
+
     return Scaffold(
       drawer: CustomDrawer(),
       appBar: AppBar(
