@@ -16,7 +16,9 @@ class HomePage extends StatelessWidget {
   Future<void> demoNetwork() async {
     try {
       var response = await NetworkService().getProduct();
-      print(response);
+      response.forEach((element) {
+        print(element.name);
+      });
     } catch (e) {
       print(e);
     }
