@@ -4,6 +4,12 @@
 
 #import "GeneratedPluginRegistrant.h"
 
+#if __has_include(<google_maps_flutter/FLTGoogleMapsPlugin.h>)
+#import <google_maps_flutter/FLTGoogleMapsPlugin.h>
+#else
+@import google_maps_flutter;
+#endif
+
 #if __has_include(<image_cropper/FLTImageCropperPlugin.h>)
 #import <image_cropper/FLTImageCropperPlugin.h>
 #else
@@ -25,6 +31,7 @@
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
+  [FLTGoogleMapsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleMapsPlugin"]];
   [FLTImageCropperPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImageCropperPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];

@@ -43,5 +43,8 @@
            android:name="com.yalantis.ucrop.UCropActivity"
            android:screenOrientation="portrait"
            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyAD0lp29Uzq1oykxryCUuwT4A3PFKQF0cA"/>
     </application>
 </manifest>
