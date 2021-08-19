@@ -16,6 +16,7 @@ class _ManagementPageState extends State<ManagementPage> {
   final _form = GlobalKey<FormState>();
   var _product = Product();
   var _editMode = false;
+  File? _imageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +39,16 @@ class _ManagementPageState extends State<ManagementPage> {
           ),
         ],
       ),
-      body: ProductForm(
-        _product,
-        callBackSetImage: _callBackSetImage,
-        formKey: _form,
-        deleteProduct: _editMode ? _deleteProduct : null,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ProductForm(
+            _product,
+            callBackSetImage: _callBackSetImage,
+            formKey: _form,
+            deleteProduct: _editMode ? _deleteProduct : null,
+          ),
+        ),
       ),
     );
   }
@@ -56,8 +62,8 @@ class _ManagementPageState extends State<ManagementPage> {
     });
   }
 
-  void _callBackSetImage(File? imageFIle) {
-    //todo
+  void _callBackSetImage(File? imageFile) {
+    _imageFile = imageFile;
   }
 
   Future<void> _submitForm() async {
@@ -67,9 +73,11 @@ class _ManagementPageState extends State<ManagementPage> {
       CustomFlushbar.showLoading(context);
       String result;
       if (_editMode) {
-        result = await NetworkService().editProduct(_product);
+        result =
+            await NetworkService().editProduct(_product, imageFile: _imageFile);
       } else {
-        result = await NetworkService().addProduct(_product);
+        result =
+            await NetworkService().addProduct(_product, imageFile: _imageFile);
       }
       CustomFlushbar.close(context);
       Navigator.pop(context);
