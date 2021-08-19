@@ -33,7 +33,7 @@ class _ManagementPageState extends State<ManagementPage> {
             style: TextButton.styleFrom(
               primary: Colors.white,
             ),
-            onPressed: () => _submitForm(context),
+            onPressed: () => _submitForm,
             child: Text('submit'),
           ),
         ],
@@ -47,11 +47,11 @@ class _ManagementPageState extends State<ManagementPage> {
     );
   }
 
-  void _deleteProduct(){
+  void _deleteProduct() {
     NetworkService().deleteProduct(_product.id!).then((value) {
       Navigator.pop(context);
       CustomFlushbar.showSuccess(context, message: value);
-    }).catchError( (exception) {
+    }).catchError((exception) {
       CustomFlushbar.showError(context, message: 'Delete fail');
     });
   }
@@ -60,7 +60,7 @@ class _ManagementPageState extends State<ManagementPage> {
     //todo
   }
 
-  Future<void> _submitForm(BuildContext context) async {
+  Future<void> _submitForm() async {
     FocusScope.of(context).requestFocus(FocusNode());
     _form.currentState?.save();
     try {
