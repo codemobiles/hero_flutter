@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
           itemCount: product.length,
           itemBuilder: (context, index) => ProductItem(
             product[index],
-            onTap: ()=> _navigatorManagementPage(product[index]),
+            onTap: () => _navigatorManagementPage(product[index]),
           ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -77,8 +77,10 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  void _navigatorManagementPage([Product? product]){
-    Navigator.pushNamed(context, AppRoute.management, arguments: product);
+  void _navigatorManagementPage([Product? product]) {
+    Navigator.pushNamed(context, AppRoute.management, arguments: product).then(
+      (value) => setState(() {}),
+    );
   }
 }
 

@@ -42,8 +42,18 @@ class _ManagementPageState extends State<ManagementPage> {
         _product,
         callBackSetImage: _callBackSetImage,
         formKey: _form,
+        deleteProduct: _editMode ? _deleteProduct : null,
       ),
     );
+  }
+
+  void _deleteProduct(){
+    NetworkService().deleteProduct(_product.id!).then((value) {
+      Navigator.pop(context);
+      CustomFlushbar.showSuccess(context, message: value);
+    }).catchError( (exception) {
+      CustomFlushbar.showError(context, message: 'Delete fail');
+    });
   }
 
   void _callBackSetImage(File? imageFIle) {
