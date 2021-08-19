@@ -7,15 +7,22 @@ import 'package:hero_flutter/src/pages/management/widgets/product_form.dart';
 import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/widgets/custom_flushbar.dart';
 
-class ManagementPage extends StatelessWidget {
+class ManagementPage extends StatefulWidget {
+  @override
+  _ManagementPageState createState() => _ManagementPageState();
+}
+
+class _ManagementPageState extends State<ManagementPage> {
   final _form = GlobalKey<FormState>();
   var _product = Product();
+  var _editMode = false;
 
   @override
   Widget build(BuildContext context) {
     final Object? arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is Product) {
       _product = arguments;
+      _editMode = true;
     }
 
     return Scaffold(
@@ -48,11 +55,16 @@ class ManagementPage extends StatelessWidget {
     _form.currentState?.save();
     try {
       CustomFlushbar.showLoading(context);
-      final result = await NetworkService().addProduct(_product);
+      String result;
+      if (_editMode) {
+        result = await NetworkService().editProduct(_product);
+      } else {
+        result = await NetworkService().addProduct(_product);
+      }
       CustomFlushbar.close(context);
       Navigator.pop(context);
       CustomFlushbar.showSuccess(context, message: result);
-    }catch (exception){
+    } catch (exception) {
       CustomFlushbar.showError(context, message: 'network fail');
     }
   }
