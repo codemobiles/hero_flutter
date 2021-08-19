@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hero_flutter/src/constants/asset.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -59,6 +61,7 @@ class MapPageState extends State<MapPage> {
         latLng,
         title: 'Rider009',
         snippet: 'Cat Lover',
+        isShowInfo: true,
       );
     }
 
@@ -137,5 +140,27 @@ class MapPageState extends State<MapPage> {
     );
   }
 
-  void _launchMaps({required double lat, required double lng}) {}
+  void _launchMaps({required double lat, required double lng}) async {
+    final parameter = '?z=16&q=$lat,$lng';
+
+    if (Platform.isIOS) {
+      final googleMap = 'comgooglemaps://';
+      final appleMap = 'https://maps.apple.com/';
+      if (await canLaunch(googleMap)) {
+        await launch(googleMap + parameter);
+        return;
+      }
+      if (await canLaunch(appleMap)) {
+        await launch(appleMap + parameter);
+        return;
+      }
+    } else {
+      final googleMapURL = 'https://maps.google.com/';
+      if (await canLaunch(googleMapURL)) {
+        await launch(googleMapURL + parameter);
+        return;
+      }
+    }
+    throw 'Could not launch url';
+  }
 }
