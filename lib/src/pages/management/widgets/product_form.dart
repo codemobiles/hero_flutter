@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hero_flutter/src/models/product.dart';
+import 'package:hero_flutter/src/pages/management/widgets/product_image.dart';
 
 class ProductForm extends StatelessWidget {
   final _spacing = 8.0;
@@ -35,10 +36,10 @@ class ProductForm extends StatelessWidget {
               ),
             ],
           ),
-          // ProductImage(
-          //   callBackSetImage,
-          //   image: product.image,
-          // ),
+          ProductImage(
+            callBackSetImage,
+            image: product.image,
+          ),
           SizedBox(height: 28),
           if (deleteProduct != null) _buildDeleteButton(context),
           SizedBox(height: 80),
