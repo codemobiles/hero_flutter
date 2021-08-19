@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hero_flutter/src/models/product.dart';
 import 'package:hero_flutter/src/pages/management/widgets/product_form.dart';
 import 'package:hero_flutter/src/utils/services/network_service.dart';
+import 'package:hero_flutter/src/widgets/custom_flushbar.dart';
 
 class ManagementPage extends StatelessWidget {
   final _form = GlobalKey<FormState>();
@@ -24,7 +26,7 @@ class ManagementPage extends StatelessWidget {
             style: TextButton.styleFrom(
               primary: Colors.white,
             ),
-            onPressed: _submitForm,
+            onPressed: () => _submitForm(context),
             child: Text('submit'),
           ),
         ],
@@ -41,9 +43,17 @@ class ManagementPage extends StatelessWidget {
     //todo
   }
 
-  Future<void> _submitForm() async {
+  Future<void> _submitForm(BuildContext context) async {
+    FocusScope.of(context).requestFocus(FocusNode());
     _form.currentState?.save();
-    final result = await NetworkService().addProduct(_product);
-    print(result);
+    try {
+      CustomFlushbar.showLoading(context);
+      final result = await NetworkService().addProduct(_product);
+      CustomFlushbar.close(context);
+      Navigator.pop(context);
+      CustomFlushbar.showSuccess(context, message: result);
+    }catch (exception){
+      CustomFlushbar.showError(context, message: 'network fail');
+    }
   }
 }
