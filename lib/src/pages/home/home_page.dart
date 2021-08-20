@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,13 +14,19 @@ import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final _refreshController = StreamController<void>();
+
+  @override
+  void dispose() {
+    _refreshController.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,25 +36,30 @@ class _HomePageState extends State<HomePage> {
         centerTitle: false,
         title: Text('Stock Workshop'),
       ),
-      body: FutureBuilder<List<Product>>(
-        future: NetworkService().getProduct(),
+      body: StreamBuilder<void>(
+        stream: _refreshController.stream,
         builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
-          }
+          return FutureBuilder<List<Product>>(
+            future: NetworkService().getProduct(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text(snapshot.error.toString());
+              }
 
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-          final product = snapshot.data;
-          if (product!.isEmpty) {
-            return Text('Empty');
-          }
-          return _buildProductGrid(product);
-        },
+              final product = snapshot.data;
+              if (product!.isEmpty) {
+                return Text('Empty');
+              }
+              return _buildProductGrid(product);
+            },
+          );
+        }
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigatorManagementPage(),
@@ -58,7 +71,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   RefreshIndicator _buildProductGrid(List<Product> product) => RefreshIndicator(
-        onRefresh: () async => setState(() {}),
+        onRefresh: () async => _refreshController.sink.add(null),
         child: GridView.builder(
           padding: EdgeInsets.all(2),
           itemCount: product.length,
