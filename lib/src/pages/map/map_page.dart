@@ -37,7 +37,10 @@ class MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('GoogleMap Workshop'),
+      ),
       body: GoogleMap(
         markers: _markers,
         mapType: MapType.normal,
@@ -198,7 +201,7 @@ class MapPageState extends State<MapPage> {
       ); // meters.
 
       _locationSubscription = _locationService.onLocationChanged.listen(
-            (locationData) async {
+        (locationData) async {
           _markers.clear();
           final latLng = LatLng(
             locationData.latitude!,
@@ -215,13 +218,13 @@ class MapPageState extends State<MapPage> {
     } on PlatformException catch (e) {
       switch (e.code) {
         case 'PERMISSION_DENIED':
-        //todo
+          //todo
           break;
         case 'SERVICE_STATUS_ERROR':
-        //todo
+          //todo
           break;
         case 'SERVICE_STATUS_DENIED':
-        //todo
+          //todo
           break;
         default:
         //todo

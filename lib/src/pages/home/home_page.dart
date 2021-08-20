@@ -5,13 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
-import 'package:hero_flutter/src/constants/asset.dart';
 import 'package:hero_flutter/src/models/product.dart';
 import 'package:hero_flutter/src/pages/home/widgets/product_item.dart';
-import 'package:hero_flutter/src/pages/management/management_page.dart';
 import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,7 +25,8 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.grey[400],
       drawer: CustomDrawer(),
       appBar: AppBar(
-        title: Text('appbarTitle'),
+        centerTitle: false,
+        title: Text('Stock Workshop'),
       ),
       body: FutureBuilder<List<Product>>(
         future: NetworkService().getProduct(),
@@ -97,11 +95,7 @@ class CustomDrawer extends StatelessWidget {
           _buildProfile(),
           ..._buildMainMenu(context),
           Spacer(),
-          ListTile(
-            leading: FaIcon(FontAwesomeIcons.signOutAlt),
-            title: Text('Log out'),
-            onTap: () => _logout(context),
-          )
+          _buildLogoutButton(),
         ],
       ),
     );
@@ -163,6 +157,7 @@ class CustomDrawer extends StatelessWidget {
     final menuViewModel = MenuViewModel()..setInBox = '99';
     return menuViewModel.items
         .map((item) => ListTile(
+              onTap: () => item.navigator(context),
               title: Text(item.title),
               leading: _buildBadge(
                 item.notification ?? '',
@@ -199,4 +194,14 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
+
+  Builder _buildLogoutButton() => Builder(
+    builder: (context) => SafeArea(
+      child: ListTile(
+        leading: FaIcon(FontAwesomeIcons.signOutAlt),
+        title: Text('Log out'),
+        onTap: () => _logout(context),
+      ),
+    ),
+  );
 }

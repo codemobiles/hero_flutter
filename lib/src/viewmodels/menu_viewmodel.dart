@@ -41,7 +41,7 @@ class MenuViewModel {
       icon: FontAwesomeIcons.map,
       iconColor: Colors.blue,
       navigator: (context) {
-        // Navigator.pushNamed(context, AppRoute.map);
+        Navigator.pushNamed(context, AppRoute.map);
       },
     ),
     Menu(

@@ -28,6 +28,7 @@ class _ManagementPageState extends State<ManagementPage> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Text('Management'),
         actions: [
           TextButton(

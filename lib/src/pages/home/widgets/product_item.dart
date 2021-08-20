@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hero_flutter/src/constants/network_api.dart';
 import 'package:hero_flutter/src/models/product.dart';
+import 'package:hero_flutter/src/utils/helpers/format.dart';
 import 'package:hero_flutter/src/widgets/image_not_found.dart';
 import 'package:hero_flutter/src/constants/network_api.dart';
 import 'package:hero_flutter/src/widgets/image_not_found.dart';
@@ -68,15 +69,13 @@ class ProductItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'xxx',
-               // '฿${formatCurrency.format(product.price)}',
+                '฿${formatCurrency.format(product.price)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                'yyy',
-                //'${formatNumber.format(product.stock)} pieces',
+               '${formatNumber.format(product.stock)} pieces',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.deepOrangeAccent,
