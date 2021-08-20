@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
-import 'package:hero_flutter/src/pages/home/home_page.dart';
 import 'package:hero_flutter/src/pages/login/widgets/background_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

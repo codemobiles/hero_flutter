@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:badges/badges.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
+import 'package:hero_flutter/src/constants/asset.dart';
 import 'package:hero_flutter/src/models/product.dart';
+import 'package:hero_flutter/src/pages/home/widgets/dialog_barcode_image.dart';
+import 'package:hero_flutter/src/pages/home/widgets/dialog_qr_image.dart';
+import 'package:hero_flutter/src/pages/home/widgets/dialog_scan_qrcode.dart';
 import 'package:hero_flutter/src/pages/home/widgets/product_item.dart';
 import 'package:hero_flutter/src/utils/services/network_service.dart';
 import 'package:hero_flutter/src/viewmodels/menu_viewmodel.dart';
@@ -29,39 +32,51 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.grey[400],
       drawer: CustomDrawer(),
       appBar: AppBar(
         centerTitle: false,
         title: Text('Stock Workshop'),
+        actions: [
+          IconButton(
+            onPressed: () => _showDialogBarcode(context),
+            icon: FaIcon(FontAwesomeIcons.barcode),
+          ),
+          IconButton(
+            onPressed: () => _showDialogQRImage(context),
+            icon: Icon(Icons.qr_code_2),
+          ),
+          IconButton(
+            onPressed: () => _showScanQRCode(context),
+            icon: Icon(Icons.qr_code_scanner),
+          ),
+        ],
       ),
       body: StreamBuilder<void>(
-        stream: _refreshController.stream,
-        builder: (context, snapshot) {
-          return FutureBuilder<List<Product>>(
-            future: NetworkService().getProduct(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
-              }
+          stream: _refreshController.stream,
+          builder: (context, snapshot) {
+            return FutureBuilder<List<Product>>(
+              future: NetworkService().getProduct(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                }
 
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-              final product = snapshot.data;
-              if (product!.isEmpty) {
-                return Text('Empty');
-              }
-              return _buildProductGrid(product);
-            },
-          );
-        }
-      ),
+                final product = snapshot.data;
+                if (product!.isEmpty) {
+                  return Text('Empty');
+                }
+                return _buildProductGrid(product);
+              },
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigatorManagementPage(),
         tooltip: 'Increment Counter',
@@ -92,6 +107,35 @@ class _HomePageState extends State<HomePage> {
   void _navigatorManagementPage([Product? product]) {
     Navigator.pushNamed(context, AppRoute.management, arguments: product).then(
       (value) => setState(() {}),
+    );
+  }
+
+  void _showDialogQRImage(context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) => DialogQRImage(
+        'www.codemobiles.com',
+        image: Asset.pinBikerImage,
+      ),
+    );
+  }
+
+  void _showScanQRCode(context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) => DialogScanQRCode(),
+    );
+  }
+
+  void _showDialogBarcode(context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) => DialogBarcodeImage(
+        'www.codemobiles.com',
+      ),
     );
   }
 }
@@ -210,12 +254,12 @@ class CustomDrawer extends StatelessWidget {
   }
 
   Builder _buildLogoutButton() => Builder(
-    builder: (context) => SafeArea(
-      child: ListTile(
-        leading: FaIcon(FontAwesomeIcons.signOutAlt),
-        title: Text('Log out'),
-        onTap: () => _logout(context),
-      ),
-    ),
-  );
+        builder: (context) => SafeArea(
+          child: ListTile(
+            leading: FaIcon(FontAwesomeIcons.signOutAlt),
+            title: Text('Log out'),
+            onTap: () => _logout(context),
+          ),
+        ),
+      );
 }

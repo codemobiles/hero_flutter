@@ -3,8 +3,6 @@ import 'package:hero_flutter/src/constants/network_api.dart';
 import 'package:hero_flutter/src/models/product.dart';
 import 'package:hero_flutter/src/utils/helpers/format.dart';
 import 'package:hero_flutter/src/widgets/image_not_found.dart';
-import 'package:hero_flutter/src/constants/network_api.dart';
-import 'package:hero_flutter/src/widgets/image_not_found.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;

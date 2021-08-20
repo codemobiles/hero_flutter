@@ -3,7 +3,6 @@ import 'package:hero_flutter/src/configs/routes/app_route.dart';
 import 'package:hero_flutter/src/constants/app_setting.dart';
 import 'package:hero_flutter/src/pages/home/home_page.dart';
 import 'package:hero_flutter/src/pages/login/login_page.dart';
-import 'package:hero_flutter/src/pages/map/map_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class App extends StatelessWidget {
