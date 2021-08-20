@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:hero_flutter/src/constants/network_api.dart';
+import 'package:hero_flutter/src/models/post.dart';
 import 'package:hero_flutter/src/models/product.dart';
 import 'package:http_parser/http_parser.dart';
 
@@ -90,6 +91,17 @@ class NetworkService {
     final response = await _dio.delete('${NetworkAPI.product}/$id');
     if (response.statusCode == 204) {
       return 'Delete Successfully';
+    }
+    throw Exception();
+  }
+
+  Future<List<Post>> fetchPosts(int startIndex, {int limit = 10}) async {
+    final url =
+        'https://jsonplaceholder.typicode.com/posts?_start=$startIndex&_limit=$limit';
+
+    final Response response = await _dio.get(url);
+    if (response.statusCode == 200) {
+      return postFromJson(jsonEncode(response.data));
     }
     throw Exception();
   }
