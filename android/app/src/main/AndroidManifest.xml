@@ -66,7 +66,10 @@
            android:screenOrientation="portrait"
            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
-       <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyAD0lp29Uzq1oykxryCUuwT4A3PFKQF0cA"/>
+       <meta-data
+           android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyDjn0Uytv_FSUwwpOUTVCvL4vKYU7Ev7VU"/>
+
+
     </application>
 </manifest>

@@ -41,7 +41,7 @@ class _FormState extends State<Form> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'codemobiles@gmail.com',
-                    labelText: 'email',
+                    labelText: 'Username',
                     icon: Icon(Icons.email),
                   ),
                 ),
@@ -54,7 +54,7 @@ class _FormState extends State<Form> {
                   controller: _passwordController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    labelText: 'password',
+                    labelText: 'Password',
                     icon: Icon(Icons.lock),
                   ),
                   obscureText: true,
